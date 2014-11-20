@@ -3,7 +3,7 @@ import json
 import feedparser
 import globalvoices
 
-#Variable to choose the number of stories
+#Variable to select the number of stories
 numStory = 5
 
 app = Flask(__name__)
