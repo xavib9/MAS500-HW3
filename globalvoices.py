@@ -12,14 +12,16 @@ basedir = os.path.dirname(os.path.abspath(__file__))
 f = open(basedir+'/globalvoices-countrypaths.json', 'r')
 path_lookup = json.loads(f.read())
 
-def recent_stories_from(country):
+
+def recent_stories_from(country , numStory):
     '''
     Return a list of the last 3 stories for a given country
     '''
     h = HTMLParser.HTMLParser()
-    raw_content = urlopen( _content_url_via_google_for( country ) ).read()
+    raw_content = urlopen( _content_url_via_google_for( country , numStory) ).read()
     content = json.loads( raw_content )
     stories = []
+
     for details in content['responseData']['feed']['entries']:
         stories.append( {
             'title': details['title'],
@@ -35,12 +37,13 @@ def country_list():
     '''
     return path_lookup.keys()
 
-def _content_url_via_google_for(country):
+def _content_url_via_google_for(country , numStory):
     '''
     Return the URL to the RSS content for a country via the Google API, so we can get in JSON directly 
     (rather than in XML)
     '''
-    return "http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=3&q="+ urllib.quote( _rss_url_for(country).encode("utf-8") )
+    print( "http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num="+str(numStory)+"&q="+ urllib.quote( _rss_url_for(country).encode("utf-8") ))
+    return "http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num="+str(numStory)+"&q="+ urllib.quote( _rss_url_for(country).encode("utf-8") )
 
 def _rss_url_for(country):
     '''
